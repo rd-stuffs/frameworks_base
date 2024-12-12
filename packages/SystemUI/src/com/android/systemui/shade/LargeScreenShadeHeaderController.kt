@@ -22,9 +22,7 @@ import android.annotation.IdRes
 import android.app.StatusBarManager
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.content.res.Configuration
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Trace
@@ -150,7 +148,6 @@ class LargeScreenShadeHeaderController @Inject constructor(
     private var roundedCorners = 0
     private var cutout: DisplayCutout? = null
     private var lastInsets: WindowInsets? = null
-    private var textColorPrimary = Color.TRANSPARENT
 
     private var privacyChipVisible = false
     private var qsDisabled = false
@@ -351,7 +348,6 @@ class LargeScreenShadeHeaderController @Inject constructor(
         privacyIconsController.chipVisibilityListener = chipVisibilityListener
         updateVisibility()
         updateTransition()
-        updateResources()
 
         if (header is MotionLayout) {
             header.setOnApplyWindowInsetsListener(insetListener)
@@ -555,22 +551,6 @@ class LargeScreenShadeHeaderController @Inject constructor(
         header.setPadding(padding, header.paddingTop, padding, header.paddingBottom)
         updateQQSPaddings()
 
-        val fillColor = Utils.getColorAttrDefaultColor(context, android.R.attr.textColorPrimary)
-        iconManager.setTint(fillColor)
-        val textColor = Utils.getColorAttrDefaultColor(context, android.R.attr.textColorPrimary)
-        val colorStateList = Utils.getColorAttr(context, android.R.attr.textColorPrimary)
-        if (textColor != textColorPrimary) {
-            val textColorSecondary = Utils.getColorAttrDefaultColor(context,
-                    android.R.attr.textColorSecondary)
-            textColorPrimary = textColor
-            if (iconManager != null) {
-                iconManager.setTint(textColor)
-            }
-            clock.setTextColor(textColorPrimary)
-            date.setTextColor(textColorPrimary)
-            qsCarrierGroup.updateColors(textColorPrimary, colorStateList)
-            batteryIcon.updateColors(textColorPrimary, textColorSecondary, textColorPrimary)
-        }
         qsBatteryModeController.updateResources()
     }
 

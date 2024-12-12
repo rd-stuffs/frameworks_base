@@ -755,8 +755,9 @@ public class ThemeOverlayController implements CoreStartable, Dumpable {
     private final ConfigurationListener mConfigurationListener = new ConfigurationListener() {
         @Override
         public void onUiModeChanged() {
-            Log.i(TAG, "Re-applying theme on UI change");
-            reevaluateSystemTheme(true /* forceReload */);
+            if (isBlackThemeEnabled()) {
+                reevaluateSystemTheme(true /* forceReload */);
+            }
         }
     };
 
